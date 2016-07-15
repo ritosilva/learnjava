@@ -1,0 +1,67 @@
+package pt.ulisboa.tecnico.learnjava.bank;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class BankCreateAccountMethodTest {
+	private static final String OWNER_NAME_ONE = "Owner Name One";
+	private static final String OWNER_NAME_TWO = "Owner Name Two";
+	private static final String OWNER_NAME_THREE = "Owner Name Three";
+	private static final String OWNER_NAME_FOUR = "Owner Name Four";
+
+	Bank bank;
+
+	@Before
+	public void setUp() throws DuplicateAccountOwnerException {
+		bank = new Bank(3);
+		bank.createAccount(OWNER_NAME_ONE);
+	}
+
+	@Test
+	public void createAccount() throws DuplicateAccountOwnerException {
+		bank.createAccount(OWNER_NAME_TWO);
+		Account account = bank.getAccount(bank.getAccountNumberByOwnerName(OWNER_NAME_TWO));
+
+		assertEquals(2, bank.getNumberOfAccounts());
+		assertEquals(OWNER_NAME_TWO, account.getOwnerName());
+	}
+
+	@Test
+	public void createTwoAccountsSameOwnerName() {
+		try {
+			bank.createAccount(OWNER_NAME_ONE);
+			fail();
+		} catch (DuplicateAccountOwnerException e) {
+			assertEquals(1, bank.getNumberOfAccounts());
+		}
+	}
+
+	@Test
+	public void createMoreAccountsThanCapacity() throws DuplicateAccountOwnerException {
+		bank.createAccount(OWNER_NAME_TWO);
+		bank.createAccount(OWNER_NAME_THREE);
+
+		try {
+			bank.createAccount(OWNER_NAME_FOUR);
+			fail();
+		} catch (ArrayIndexOutOfBoundsException e) {
+			assertEquals(3, bank.getNumberOfAccounts());
+			assertNotNull(bank.getAccountByOwnerName(OWNER_NAME_ONE));
+			assertNotNull(bank.getAccountByOwnerName(OWNER_NAME_TWO));
+			assertNotNull(bank.getAccountByOwnerName(OWNER_NAME_THREE));
+			assertNull(bank.getAccountByOwnerName(OWNER_NAME_FOUR));
+		}
+	}
+
+	@After
+	public void tearDown() {
+		bank = null;
+	}
+
+}
