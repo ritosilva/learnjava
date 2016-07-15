@@ -1,0 +1,11 @@
+.classpath
+.project
+.settings
+target
+bin
+doc
+commands
+org.eclipse.jdt.core.prefs
+
+*.class
+/target/
