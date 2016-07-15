@@ -8,7 +8,11 @@ public class Bank {
 		accounts = new Account[numMaxAccounts];
 	}
 
-	public int createAccount(String ownerName) throws DuplicateAccountOwnerException {
+	public int createAccount(String ownerName) throws DuplicateAccountOwnerException, NoAvailableNewAccountsException {
+		if (nextAccountNumber == accounts.length) {
+			throw new NoAvailableNewAccountsException(accounts.length);
+		}
+
 		Account account = getAccountByOwnerName(ownerName);
 
 		if (account != null) {
@@ -61,7 +65,7 @@ public class Bank {
 		return numberOfAccounts;
 	}
 
-	public static void main(String[] args) throws DuplicateAccountOwnerException {
+	public static void main(String[] args) throws DuplicateAccountOwnerException, NoAvailableNewAccountsException {
 		Bank cgd = new Bank(1_000_000);
 
 		cgd.createAccount("António");

@@ -18,13 +18,13 @@ public class BankCreateAccountMethodTest {
 	Bank bank;
 
 	@Before
-	public void setUp() throws DuplicateAccountOwnerException {
+	public void setUp() throws DuplicateAccountOwnerException, NoAvailableNewAccountsException {
 		bank = new Bank(3);
 		bank.createAccount(OWNER_NAME_ONE);
 	}
 
 	@Test
-	public void createAccount() throws DuplicateAccountOwnerException {
+	public void createAccount() throws DuplicateAccountOwnerException, NoAvailableNewAccountsException {
 		bank.createAccount(OWNER_NAME_TWO);
 		Account account = bank.getAccount(bank.getAccountNumberByOwnerName(OWNER_NAME_TWO));
 
@@ -33,7 +33,7 @@ public class BankCreateAccountMethodTest {
 	}
 
 	@Test
-	public void createTwoAccountsSameOwnerName() {
+	public void createTwoAccountsSameOwnerName() throws NoAvailableNewAccountsException {
 		try {
 			bank.createAccount(OWNER_NAME_ONE);
 			fail();
@@ -43,15 +43,17 @@ public class BankCreateAccountMethodTest {
 	}
 
 	@Test
-	public void createMoreAccountsThanCapacity() throws DuplicateAccountOwnerException {
+	public void createMoreAccountsThanCapacity()
+			throws DuplicateAccountOwnerException, NoAvailableNewAccountsException {
 		bank.createAccount(OWNER_NAME_TWO);
 		bank.createAccount(OWNER_NAME_THREE);
 
 		try {
 			bank.createAccount(OWNER_NAME_FOUR);
 			fail();
-		} catch (ArrayIndexOutOfBoundsException e) {
+		} catch (NoAvailableNewAccountsException e) {
 			assertEquals(3, bank.getNumberOfAccounts());
+			assertEquals(e.getSize(), bank.getNumberOfAccounts());
 			assertNotNull(bank.getAccountByOwnerName(OWNER_NAME_ONE));
 			assertNotNull(bank.getAccountByOwnerName(OWNER_NAME_TWO));
 			assertNotNull(bank.getAccountByOwnerName(OWNER_NAME_THREE));
