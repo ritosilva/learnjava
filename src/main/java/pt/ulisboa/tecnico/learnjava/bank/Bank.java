@@ -8,11 +8,27 @@ public class Bank {
 		accounts = new Account[numMaxAccounts];
 	}
 
-	public int createAccount(String ownerName) {
-		Account account = new Account(ownerName);
+	public int createAccount(String ownerName) throws DuplicateAccountOwnerException {
+		Account account = getAccountByOwnerName(ownerName);
+
+		if (account != null) {
+			throw new DuplicateAccountOwnerException(ownerName);
+		}
+
+		account = new Account(ownerName);
 		accounts[nextAccountNumber] = account;
 		nextAccountNumber = nextAccountNumber + 1;
 		return nextAccountNumber - 1;
+	}
+
+	public Account getAccountByOwnerName(String ownerName) {
+		Account account = null;
+		for (int i = 0; i < accounts.length; i++) {
+			if (accounts[i] != null && accounts[i].getOwnerName().equals(ownerName)) {
+				account = accounts[i];
+			}
+		}
+		return account;
 	}
 
 	public void deleteAccount(String ownerName) {
@@ -37,7 +53,7 @@ public class Bank {
 
 	public int getNumberOfAccounts() {
 		int numberOfAccounts = 0;
-		for (int i = 0; i < accounts.length - 1; i++) {
+		for (int i = 0; i < accounts.length; i++) {
 			if (accounts[i] != null) {
 				numberOfAccounts++;
 			}
@@ -45,26 +61,21 @@ public class Bank {
 		return numberOfAccounts;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws DuplicateAccountOwnerException {
 		Bank cgd = new Bank(1_000_000);
 
 		cgd.createAccount("António");
-		cgd.createAccount("Manuel");
 
-		Account account = cgd.getAccount(cgd.getAccountNumberByOwnerName("Manuel"));
+		Account account = cgd.getAccount(cgd.getAccountNumberByOwnerName("António"));
 
-		account.deposit(100);
-
-		System.out.println("The number of accounts is " + cgd.getNumberOfAccounts());
-		System.out.println("The balance for account owner " + account.getOwnerName() + " is " + account.getBalance());
-
-		cgd.deleteAccount("António");
-
-		account = cgd.getAccount(cgd.getAccountNumberByOwnerName("Manuel"));
+		try {
+			account.deposit(-100);
+		} catch (NegativeAmmountException e) {
+			System.out.println("You cannot deposit a negative value: " + e.getValue());
+		}
 
 		System.out.println("The number of accounts is " + cgd.getNumberOfAccounts());
 		System.out.println("The balance for account owner " + account.getOwnerName() + " is " + account.getBalance());
-		System.out.println("The account number for Manuel is " + cgd.getAccountNumberByOwnerName("Manuel"));
 	}
 
 }

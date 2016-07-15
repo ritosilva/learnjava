@@ -25,7 +25,11 @@ public class Account {
 		return balance;
 	}
 
-	public void deposit(int ammount) {
+	public void deposit(int ammount) throws NegativeAmmountException {
+		if (ammount < 0) {
+			throw new NegativeAmmountException(ammount);
+		}
+
 		balance = balance + ammount;
 	}
 
