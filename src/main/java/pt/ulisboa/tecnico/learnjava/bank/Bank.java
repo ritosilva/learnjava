@@ -37,7 +37,7 @@ public class Bank {
 
 	public int getNumberOfAccounts() {
 		int numberOfAccounts = 0;
-		for (int i = 0; i < accounts.length - 1; i++) {
+		for (int i = 0; i < accounts.length; i++) {
 			if (accounts[i] != null) {
 				numberOfAccounts++;
 			}
