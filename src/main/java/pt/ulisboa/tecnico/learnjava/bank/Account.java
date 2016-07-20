@@ -33,8 +33,14 @@ public class Account {
 		balance = balance + ammount;
 	}
 
-	public void withdraw(int ammount) {
-		if (balance - ammount >= 0) {
+	public void withdraw(int ammount) throws NegativeAmmountException, InvalidWithdrawException {
+		if (ammount < 0) {
+			throw new NegativeAmmountException(ammount);
+		}
+
+		if (balance - ammount < 0) {
+			throw new InvalidWithdrawException();
+		} else {
 			balance = balance - ammount;
 		}
 	}
