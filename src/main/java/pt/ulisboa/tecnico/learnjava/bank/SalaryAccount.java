@@ -12,16 +12,18 @@ public class SalaryAccount extends Account {
 	}
 
 	@Override
-	public void withdraw(int ammount) throws NegativeAmmountException, InvalidWithdrawException {
-		if (ammount < 0) {
-			throw new NegativeAmmountException(ammount);
-		}
+	protected String getNextAccountId() {
+		counter++;
+		return "SL" + Integer.toString(counter);
+	}
 
+	@Override
+	public void withdraw(int ammount) throws NegativeAmmountException, InvalidWithdrawException {
 		if (getBalance() - ammount < -salary) {
 			throw new InvalidWithdrawException();
-		} else {
-			setBalance(getBalance() - ammount);
 		}
+
+		super.withdraw(ammount);
 	}
 
 }

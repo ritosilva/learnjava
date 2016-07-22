@@ -9,12 +9,12 @@ import org.junit.Test;
 import pt.ulisboa.tecnico.learnjava.bank.exception.InvalidAccountDepositException;
 import pt.ulisboa.tecnico.learnjava.bank.exception.NegativeAmmountException;
 
-public class AccountDepositMethodTest {
+public class CheckingAccountDepositMethodTest {
 	Account account;
 
 	@Before
 	public void setUp() {
-		account = new Account();
+		account = new CheckingAccount("António", 0);
 	}
 
 	@Test

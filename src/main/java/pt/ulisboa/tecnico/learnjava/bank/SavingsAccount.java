@@ -11,7 +11,7 @@ public class SavingsAccount extends Account {
 	@Override
 	protected String getNextAccountId() {
 		counter++;
-		return "S" + Integer.toString(counter);
+		return "SV" + Integer.toString(counter);
 	}
 
 	public SavingsAccount(String ownerName, int balance, int base) {
@@ -30,15 +30,11 @@ public class SavingsAccount extends Account {
 
 	@Override
 	public void withdraw(int ammount) throws NegativeAmmountException, InvalidWithdrawException {
-		if (ammount < 0) {
-			throw new NegativeAmmountException(ammount);
+		if (ammount != getBalance()) {
+			throw new InvalidWithdrawException();
 		}
 
-		if (getBalance() - ammount < 0) {
-			throw new InvalidWithdrawException();
-		} else {
-			setBalance(getBalance() - ammount);
-		}
+		super.withdraw(ammount);
 	}
 
 	public int getPoints() {

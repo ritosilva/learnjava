@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class GetNextAccountIdMethodTest {
+
 	Account account;
 
 	@Before
@@ -14,17 +15,24 @@ public class GetNextAccountIdMethodTest {
 	}
 
 	@Test
-	public void createAccount() {
-		account = new Account("António", 1000);
+	public void createCheckingAccount() {
+		account = new CheckingAccount("António", 1000);
 
-		assertTrue(account.getAccountId().startsWith("A"));
+		assertTrue(account.getAccountId().startsWith("CK"));
 	}
 
 	@Test
 	public void createSavingsAccount() {
 		account = new SavingsAccount("António", 1000, 100);
 
-		assertTrue(account.getAccountId().startsWith("S"));
+		assertTrue(account.getAccountId().startsWith("SV"));
+	}
+
+	@Test
+	public void createSalaryAccount() {
+		account = new SalaryAccount("António", 1000, 1500);
+
+		assertTrue(account.getAccountId().startsWith("SL"));
 	}
 
 }

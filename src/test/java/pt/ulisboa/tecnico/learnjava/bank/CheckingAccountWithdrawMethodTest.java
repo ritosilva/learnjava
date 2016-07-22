@@ -10,13 +10,12 @@ import org.junit.Test;
 import pt.ulisboa.tecnico.learnjava.bank.exception.InvalidWithdrawException;
 import pt.ulisboa.tecnico.learnjava.bank.exception.NegativeAmmountException;
 
-public class AccountWithdrawMethodTest {
-	Account account;
+public class CheckingAccountWithdrawMethodTest {
+	CheckingAccount account;
 
 	@Before
 	public void setUp() {
-		account = new Account();
-		account = new Account("António", 1000);
+		account = new CheckingAccount("António", 1000);
 	}
 
 	@Test

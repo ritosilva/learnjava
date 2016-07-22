@@ -24,7 +24,7 @@ public class Bank {
 			throw new DuplicateAccountOwnerException(ownerName);
 		}
 
-		account = new Account(ownerName);
+		account = new CheckingAccount(ownerName, 0);
 		accounts[nextAccountNumber] = account;
 		nextAccountNumber = nextAccountNumber + 1;
 		return nextAccountNumber - 1;
