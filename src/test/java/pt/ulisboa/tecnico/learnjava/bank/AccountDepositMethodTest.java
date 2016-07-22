@@ -6,6 +6,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import pt.ulisboa.tecnico.learnjava.bank.exception.InvalidAccountDepositException;
+import pt.ulisboa.tecnico.learnjava.bank.exception.NegativeAmmountException;
+
 public class AccountDepositMethodTest {
 	Account account;
 
@@ -15,20 +18,20 @@ public class AccountDepositMethodTest {
 	}
 
 	@Test
-	public void testSingleDeposit() throws NegativeAmmountException {
+	public void testSingleDeposit() throws NegativeAmmountException, InvalidAccountDepositException {
 		account.deposit(600);
 		assertEquals(600, account.getBalance());
 	}
 
 	@Test
-	public void testMultipleDeposit() throws NegativeAmmountException {
+	public void testMultipleDeposit() throws NegativeAmmountException, InvalidAccountDepositException {
 		account.deposit(600);
 		account.deposit(500);
 		assertEquals(1100, account.getBalance());
 	}
 
 	@Test
-	public void testNegativeDeposit() throws NegativeAmmountException {
+	public void testNegativeDeposit() throws NegativeAmmountException, InvalidAccountDepositException {
 		account.deposit(600);
 
 		try {

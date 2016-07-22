@@ -1,6 +1,18 @@
 package pt.ulisboa.tecnico.learnjava.bank;
 
+import pt.ulisboa.tecnico.learnjava.bank.exception.InvalidAccountDepositException;
+import pt.ulisboa.tecnico.learnjava.bank.exception.InvalidWithdrawException;
+import pt.ulisboa.tecnico.learnjava.bank.exception.NegativeAmmountException;
+
 public class Account {
+	protected static int counter = 0;
+
+	protected String getNextAccountId() {
+		counter++;
+		return "A" + Integer.toString(counter);
+	}
+
+	private String accountId;
 	private String ownerName;
 	private int balance;
 
@@ -13,8 +25,13 @@ public class Account {
 	}
 
 	public Account(String ownerName, int balance) {
+		this.accountId = getNextAccountId();
 		this.ownerName = ownerName;
 		this.balance = balance;
+	}
+
+	public String getAccountId() {
+		return accountId;
 	}
 
 	public String getOwnerName() {
@@ -25,7 +42,11 @@ public class Account {
 		return balance;
 	}
 
-	public void deposit(int ammount) throws NegativeAmmountException {
+	protected void setBalance(int value) {
+		balance = value;
+	}
+
+	public void deposit(int ammount) throws NegativeAmmountException, InvalidAccountDepositException {
 		if (ammount < 0) {
 			throw new NegativeAmmountException(ammount);
 		}
@@ -38,11 +59,7 @@ public class Account {
 			throw new NegativeAmmountException(ammount);
 		}
 
-		if (balance - ammount < 0) {
-			throw new InvalidWithdrawException();
-		} else {
-			balance = balance - ammount;
-		}
+		balance = balance - ammount;
 	}
 
 }

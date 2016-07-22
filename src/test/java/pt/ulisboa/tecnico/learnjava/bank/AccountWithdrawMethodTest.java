@@ -7,6 +7,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import pt.ulisboa.tecnico.learnjava.bank.exception.InvalidWithdrawException;
+import pt.ulisboa.tecnico.learnjava.bank.exception.NegativeAmmountException;
+
 public class AccountWithdrawMethodTest {
 	Account account;
 

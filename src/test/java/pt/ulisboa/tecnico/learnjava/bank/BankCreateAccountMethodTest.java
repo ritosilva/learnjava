@@ -9,6 +9,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import pt.ulisboa.tecnico.learnjava.bank.exception.DuplicateAccountOwnerException;
+import pt.ulisboa.tecnico.learnjava.bank.exception.NoAvailableNewAccountsException;
+
 public class BankCreateAccountMethodTest {
 	private static final String OWNER_NAME_ONE = "Owner Name One";
 	private static final String OWNER_NAME_TWO = "Owner Name Two";

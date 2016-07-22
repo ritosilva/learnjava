@@ -1,5 +1,10 @@
 package pt.ulisboa.tecnico.learnjava.bank;
 
+import pt.ulisboa.tecnico.learnjava.bank.exception.DuplicateAccountOwnerException;
+import pt.ulisboa.tecnico.learnjava.bank.exception.InvalidAccountDepositException;
+import pt.ulisboa.tecnico.learnjava.bank.exception.NegativeAmmountException;
+import pt.ulisboa.tecnico.learnjava.bank.exception.NoAvailableNewAccountsException;
+
 public class Bank {
 	int nextAccountNumber = 0;
 	Account[] accounts;
@@ -65,7 +70,8 @@ public class Bank {
 		return numberOfAccounts;
 	}
 
-	public static void main(String[] args) throws DuplicateAccountOwnerException, NoAvailableNewAccountsException {
+	public static void main(String[] args)
+			throws DuplicateAccountOwnerException, NoAvailableNewAccountsException, InvalidAccountDepositException {
 		Bank cgd = new Bank(1_000_000);
 
 		cgd.createAccount("António");
