@@ -1,82 +1,76 @@
 package pt.ulisboa.tecnico.learnjava.bank;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import pt.ulisboa.tecnico.learnjava.bank.Account.AccountType;
 import pt.ulisboa.tecnico.learnjava.bank.exception.DuplicateAccountOwnerException;
 import pt.ulisboa.tecnico.learnjava.bank.exception.InvalidAccountDepositException;
 import pt.ulisboa.tecnico.learnjava.bank.exception.NegativeAmmountException;
-import pt.ulisboa.tecnico.learnjava.bank.exception.NoAvailableNewAccountsException;
+import pt.ulisboa.tecnico.learnjava.bank.exception.UnknownAccountTypeException;
 
 public class Bank {
-	int nextAccountNumber = 0;
-	Account[] accounts;
+	Set<Account> accounts = null;
 
-	public Bank(int numMaxAccounts) {
-		accounts = new Account[numMaxAccounts];
+	public Bank() {
+		accounts = new HashSet<Account>();
 	}
 
-	public int createAccount(String ownerName) throws DuplicateAccountOwnerException, NoAvailableNewAccountsException {
-		if (nextAccountNumber == accounts.length) {
-			throw new NoAvailableNewAccountsException(accounts.length);
+	public Account createAccount(AccountType type, String ownerName)
+			throws DuplicateAccountOwnerException, UnknownAccountTypeException {
+		checkUniqueOwnerName(ownerName);
+
+		Account account;
+		switch (type) {
+		case CHECKING:
+			account = new CheckingAccount(ownerName, 0);
+			break;
+		case SAVINGS:
+			account = new SavingsAccount(ownerName, 0, 100);
+			break;
+		case SALARY:
+			account = new SalaryAccount(ownerName, 0, 1000);
+			break;
+		default:
+			throw new UnknownAccountTypeException();
 		}
+		accounts.add(account);
 
-		Account account = getAccountByOwnerName(ownerName);
-
-		if (account != null) {
-			throw new DuplicateAccountOwnerException(ownerName);
-		}
-
-		account = new CheckingAccount(ownerName, 0);
-		accounts[nextAccountNumber] = account;
-		nextAccountNumber = nextAccountNumber + 1;
-		return nextAccountNumber - 1;
-	}
-
-	public Account getAccountByOwnerName(String ownerName) {
-		Account account = null;
-		for (int i = 0; i < accounts.length; i++) {
-			if (accounts[i] != null && accounts[i].getOwnerName().equals(ownerName)) {
-				account = accounts[i];
-			}
-		}
 		return account;
 	}
 
-	public void deleteAccount(String ownerName) {
-		int accountNumber = getAccountNumberByOwnerName(ownerName);
-		if (accountNumber != -1) {
-			accounts[accountNumber] = null;
+	public void checkUniqueOwnerName(String ownerName) throws DuplicateAccountOwnerException {
+		Account account = getAccountByOwnerName(ownerName);
+		if (account != null) {
+			throw new DuplicateAccountOwnerException(ownerName);
 		}
 	}
 
-	public int getAccountNumberByOwnerName(String ownerName) {
-		for (int i = 0; i < accounts.length; i++) {
-			if (accounts[i] != null && accounts[i].getOwnerName().equals(ownerName)) {
-				return i;
+	public Account getAccountByOwnerName(String ownerName) {
+		for (Account account : accounts) {
+			if (account.getOwnerName().equals(ownerName)) {
+				return account;
 			}
 		}
-		return -1;
+		return null;
 	}
 
-	public Account getAccount(int accountNumber) {
-		return accounts[accountNumber];
+	public void deleteAccount(String ownerName) {
+		Account account = getAccountByOwnerName(ownerName);
+		if (account != null) {
+			accounts.remove(account);
+		}
 	}
 
 	public int getNumberOfAccounts() {
-		int numberOfAccounts = 0;
-		for (int i = 0; i < accounts.length; i++) {
-			if (accounts[i] != null) {
-				numberOfAccounts++;
-			}
-		}
-		return numberOfAccounts;
+		return accounts.size();
 	}
 
 	public static void main(String[] args)
-			throws DuplicateAccountOwnerException, NoAvailableNewAccountsException, InvalidAccountDepositException {
-		Bank cgd = new Bank(1_000_000);
+			throws DuplicateAccountOwnerException, InvalidAccountDepositException, UnknownAccountTypeException {
+		Bank cgd = new Bank();
 
-		cgd.createAccount("António");
-
-		Account account = cgd.getAccount(cgd.getAccountNumberByOwnerName("António"));
+		Account account = cgd.createAccount(AccountType.CHECKING, "António");
 
 		try {
 			account.deposit(-100);

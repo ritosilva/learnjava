@@ -5,6 +5,10 @@ import pt.ulisboa.tecnico.learnjava.bank.exception.InvalidWithdrawException;
 import pt.ulisboa.tecnico.learnjava.bank.exception.NegativeAmmountException;
 
 public abstract class Account {
+	public enum AccountType {
+		CHECKING, SAVINGS, SALARY
+	}
+
 	protected static int counter = 0;
 
 	protected abstract String getNextAccountId();
