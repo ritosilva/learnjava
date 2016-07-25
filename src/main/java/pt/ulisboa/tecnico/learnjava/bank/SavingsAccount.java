@@ -11,7 +11,7 @@ public class SavingsAccount extends Account {
 	@Override
 	protected String getNextAccountId() {
 		counter++;
-		return "SV" + Integer.toString(counter);
+		return AccountType.SAVINGS.getPrefix() + Integer.toString(counter);
 	}
 
 	public SavingsAccount(String ownerName, int balance, int base) {

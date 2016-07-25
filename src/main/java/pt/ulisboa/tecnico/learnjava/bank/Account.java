@@ -6,7 +6,17 @@ import pt.ulisboa.tecnico.learnjava.bank.exception.NegativeAmmountException;
 
 public abstract class Account {
 	public enum AccountType {
-		CHECKING, SAVINGS, SALARY
+		CHECKING("CK"), SAVINGS("SV"), SALARY("SL");
+
+		private final String prefix;
+
+		AccountType(String prefix) {
+			this.prefix = prefix;
+		}
+
+		public String getPrefix() {
+			return prefix;
+		}
 	}
 
 	protected static int counter = 0;

@@ -16,7 +16,7 @@ public class Bank {
 		accounts = new HashSet<Account>();
 	}
 
-	public Account createAccount(AccountType type, String ownerName)
+	public Account createAccount(AccountType type, String ownerName, int value)
 			throws DuplicateAccountOwnerException, UnknownAccountTypeException {
 		checkUniqueOwnerName(ownerName);
 
@@ -26,10 +26,10 @@ public class Bank {
 			account = new CheckingAccount(ownerName, 0);
 			break;
 		case SAVINGS:
-			account = new SavingsAccount(ownerName, 0, 100);
+			account = new SavingsAccount(ownerName, 0, value);
 			break;
 		case SALARY:
-			account = new SalaryAccount(ownerName, 0, 1000);
+			account = new SalaryAccount(ownerName, 0, value);
 			break;
 		default:
 			throw new UnknownAccountTypeException();
@@ -70,7 +70,7 @@ public class Bank {
 			throws DuplicateAccountOwnerException, InvalidAccountDepositException, UnknownAccountTypeException {
 		Bank cgd = new Bank();
 
-		Account account = cgd.createAccount(AccountType.CHECKING, "António");
+		Account account = cgd.createAccount(AccountType.CHECKING, "António", 0);
 
 		try {
 			account.deposit(-100);

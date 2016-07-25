@@ -14,7 +14,7 @@ public class SalaryAccount extends Account {
 	@Override
 	protected String getNextAccountId() {
 		counter++;
-		return "SL" + Integer.toString(counter);
+		return AccountType.SALARY.getPrefix() + Integer.toString(counter);
 	}
 
 	@Override

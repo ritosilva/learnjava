@@ -12,7 +12,7 @@ public class CheckingAccount extends Account {
 	@Override
 	protected String getNextAccountId() {
 		counter++;
-		return "CK" + Integer.toString(counter);
+		return AccountType.CHECKING.getPrefix() + Integer.toString(counter);
 	}
 
 	@Override
